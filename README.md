@@ -169,9 +169,7 @@ rag-chatbot/
 │
 ├── docs/
 │   ├── chatbot-home.png
-│   ├── document-upload.png
-│   ├── chat-response.png
-│   └── source-citations.png
+│   └── github-banner.svg
 │
 ├── .env.example
 ├── .gitignore
@@ -181,7 +179,7 @@ rag-chatbot/
 └── README.md
 ```
 
-> The `docs/` image files are placeholders for your own screenshots. Add screenshots there after running the application.
+> `docs/chatbot-home.png` contains the project homepage screenshot.
 
 ---
 
@@ -202,8 +200,8 @@ A dedicated GPU is **not required** for the basic CPU-oriented workflow.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/rag-chatbot.git
-cd rag-chatbot
+git clone https://github.com/121dushali-glitch/RAG-AI-chatbot.git
+cd RAG-AI-chatbot
 ```
 
 ### 2. Create a virtual environment
@@ -411,13 +409,9 @@ After starting the application, verify:
 
 ---
 
-## 📸 Screenshots
+## 📸 Project Screenshot
 
-Add real screenshots to `docs/` and uncomment/update the sections below.
-
-### Chat Interface
-
-![Homepage](docs/chatbot-home.png)
+![RAG AI Chatbot Homepage](docs/chatbot-home.png)
 
 ---
 
@@ -487,10 +481,7 @@ This project demonstrates practical implementation of:
 
 MCA | Python & AI Developer
 
-- GitHub: `https://github.com/YOUR_USERNAME`
-- LinkedIn: `https://www.linkedin.com/in/YOUR_USERNAME`
-
-> Replace the placeholders with your actual profile links before publishing.
+- GitHub: `https://github.com/121dushali-glitch`
 
 ---
 
@@ -502,6 +493,4 @@ If you find this project useful or interesting, consider giving the repository a
 
 ## 📄 License
 
-This project is currently intended for **educational and portfolio purposes**.
-
-If you plan to distribute it as open-source software, add a license such as MIT after confirming that the project's dependencies and any included assets permit your intended use.
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
