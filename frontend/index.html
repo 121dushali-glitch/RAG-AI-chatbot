@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RAG AI Chatbot</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<!-- ── Sidebar ───────────────────────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="#6366f1"/>
+        <path d="M7 14L12 19L21 9" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>RAG Chatbot</span>
+    </div>
+    <button class="icon-btn" id="newSessionBtn" title="New Session">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Sources panel -->
+  <div class="sidebar-section">
+    <p class="section-label">LOADED SOURCES</p>
+    <ul id="sourceList" class="source-list">
+      <li class="empty-hint">No documents yet</li>
+    </ul>
+  </div>
+
+  <!-- Upload zone -->
+  <div class="sidebar-section upload-section">
+    <p class="section-label">ADD DOCUMENTS</p>
+
+    <div class="drop-zone" id="dropZone">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5">
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+      <p>Drop files here or <label class="link-label" for="fileInput">browse</label></p>
+      <p class="hint">PDF · DOCX · XLSX · CSV · PPTX · TXT</p>
+      <input type="file" id="fileInput" hidden multiple
+             accept=".pdf,.docx,.doc,.xlsx,.xls,.csv,.pptx,.ppt,.txt,.md" />
+    </div>
+
+    <!-- URL input -->
+    <div class="url-row">
+      <input type="url" id="urlInput" placeholder="Paste website URL…" class="url-input" />
+      <button class="btn-icon-primary" id="addUrlBtn" title="Add URL">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-wrap" id="progressWrap" hidden>
+      <div class="progress-bar" id="progressBar"></div>
+      <span id="progressLabel">Processing…</span>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <button class="btn-ghost" id="resetBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="1 4 1 10 7 10"/>
+        <path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
+      </svg>
+      Reset session
+    </button>
+  </div>
+</aside>
+
+<!-- ── Main chat area ─────────────────────────────────────────────────────── -->
+<main class="chat-container">
+  <header class="chat-header">
+    <button class="icon-btn mobile-menu-btn" id="menuBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <div class="header-info">
+      <h1>Ask your documents</h1>
+      <span class="status-badge" id="statusBadge">No documents loaded</span>
+    </div>
+  </header>
+
+  <!-- Messages -->
+  <div class="messages" id="messages">
+    <!-- Welcome card -->
+    <div class="welcome-card" id="welcomeCard">
+      <div class="welcome-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <rect width="48" height="48" rx="14" fill="#eef2ff"/>
+          <path d="M14 24L22 32L34 16" stroke="#6366f1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2>Ready to answer your questions</h2>
+      <p>Upload a PDF, Word doc, Excel sheet, CSV, PowerPoint, or paste a website URL — then ask anything about it.</p>
+      <div class="quick-tips">
+        <div class="tip">📄 PDF files up to 20 MB</div>
+        <div class="tip">📊 Excel &amp; CSV spreadsheets</div>
+        <div class="tip">🌐 Any public website URL</div>
+        <div class="tip">📝 Word &amp; PowerPoint files</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sources drawer (shown after answer) -->
+  <div class="sources-drawer" id="sourcesDrawer" hidden>
+    <button class="drawer-close" id="drawerClose">✕</button>
+    <h3>Source excerpts</h3>
+    <div id="sourcesContent"></div>
+  </div>
+
+  <!-- Input bar -->
+  <div class="input-bar">
+    <div class="input-wrap">
+      <textarea
+        id="questionInput"
+        placeholder="Ask a question about your documents…"
+        rows="1"
+        disabled
+      ></textarea>
+      <button class="send-btn" id="sendBtn" disabled>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+    <p class="disclaimer">Answers are based only on your uploaded documents.</p>
+  </div>
+</main>
+
+<!-- Toast -->
+<div id="toast" class="toast" hidden></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+# RAG Chatbot — Python dependencies (CPU-only)
+#
+# LLM answers come from Ollama (a separate local app, not a Python package —
+# see README for install steps). This keeps the Python install small.
+
+# Web framework
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+python-multipart==0.0.12
+
+# HTTP client (async, used to stream from Ollama / OpenAI)
+aiohttp==3.11.7
+
+# Embeddings (ONNX Runtime, CPU-only, no PyTorch — avoids Windows SAC/WDAC DLL blocks)
+fastembed==0.4.2
+
+# Vector search
+faiss-cpu==1.9.0
+
+# ── OPTIONAL: only needed if you set LLM_BACKEND=gemma (runs Gemma directly
+# via HuggingFace transformers instead of Ollama). Heavy — adds 2GB+ of disk
+# space (torch + CUDA-adjacent deps) and more RAM use. Not installed by
+# default; uncomment only if you have the space and don't want Ollama:
+# torch==2.5.1
+# transformers==4.46.3
+# accelerate==1.1.1
+# sentencepiece==0.2.0
+# protobuf==5.28.3
+
+# Document parsers
+pymupdf==1.25.1           # PDF (fitz)
+python-docx==1.1.2        # DOCX
+openpyxl==3.1.5           # XLSX
+python-pptx==1.0.2        # PPTX
+
+# Web scraping
+requests==2.32.3
+beautifulsoup4==4.12.3
+lxml==5.3.0               # faster BS4 parser
+
+# Utilities
+python-dotenv==1.0.1
+numpy==1.26.4
