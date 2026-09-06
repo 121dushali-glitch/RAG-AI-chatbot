@@ -417,19 +417,7 @@ Add real screenshots to `docs/` and uncomment/update the sections below.
 
 ### Chat Interface
 
-![Chat Interface](docs/chatbot-home.png)
-
-### Document Upload
-
-![Document Upload](docs/document-upload.png)
-
-### Generated Response
-
-![Generated Response](docs/chat-response.png)
-
-### Source References
-
-![Source References](docs/source-citations.png)
+![Homepage](docs/chatbot-home.png)
 
 ---
 
